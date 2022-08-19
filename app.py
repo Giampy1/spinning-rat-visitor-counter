@@ -81,5 +81,12 @@ def index():
         b64, download_name=f"{count}-spinning-rat.png", mimetype="image/png"
     )
 
-if __name__ == '__main__':
-    app.run()
+@app.route('/<count>')
+def rat_count(count):
+    if not count.isnumeric():
+        return 'Not a number'
+    b64 = make_rat(int(count))
+    
+    return send_file(
+        b64, download_name=f"{count}-spinning-rat.png", mimetype="image/png"
+    )
