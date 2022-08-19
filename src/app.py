@@ -1,5 +1,6 @@
 import io
 from math import ceil, sqrt
+from os.path import exists
 
 from flask import Flask, send_file
 from PIL import Image, ImageDraw, ImageFont
@@ -15,12 +16,15 @@ b_gif = Image.open('assets/rat-spinning.gif')
 font = ImageFont.truetype("assets/Roboto-Bold.ttf", 15)
 
 def add():
+    if not exists('count.txt'):
+        open('count.txt', 'w')
+
     with open('count.txt', 'r+') as f:
         lines = f.readlines()
         if len(lines) <= 0:
-            f.write("1")
-            lines = f.readlines()
-                
+            f.writelines("1")
+            return 1
+            
         count = int(lines[0])
         count += 1
         f.truncate(0)
