@@ -11,15 +11,15 @@ app = Flask(__name__)
 num_key_frames = 37
 size = 500
 
-b_gif = Image.open('app/assets/rat-spinning.gif')
+b_gif = Image.open('./assets/rat-spinning.gif')
 
-font = ImageFont.truetype("app/assets/Roboto-Bold.ttf", 15)
+font = ImageFont.truetype("./assets/Roboto-Bold.ttf", 15)
 
 def add():
-    if not exists('app/count.txt'):
-        open('app/count.txt', 'w')
+    if not exists('count.txt'):
+        open('count.txt', 'w')
 
-    with open('app/count.txt', 'r+') as f:
+    with open('count.txt', 'r+') as f:
         lines = f.readlines()
         if len(lines) <= 0:
             f.writelines("1")
