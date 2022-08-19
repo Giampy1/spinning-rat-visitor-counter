@@ -3,5 +3,5 @@
 
 ## Run
 ```shell
-> python -m app
+> flask run
 ```

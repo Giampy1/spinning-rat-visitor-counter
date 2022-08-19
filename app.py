@@ -34,7 +34,6 @@ def add():
     return count
 
 def make_rat(count: int = 1):
-    
     b_frames = []
     
     for i in range(num_key_frames):
@@ -53,43 +52,29 @@ def make_rat(count: int = 1):
     f_size = ceil(size/m_length)
     
     for f in range(len(b_frames)):
-        b_frames[f]= b_frames[f].resize((f_size, f_size))
+        b_frames[f]= b_frames[f].resize((f_size, f_size), resample=Image.NEAREST)
 
     for f in range(len(b_frames)):
         rat_left = count
-        bg_frame = Image.new("RGBA", (size, size), (255, 255, 255))
-        frame = Image.new("RGBA", (size, size))
+        frame = Image.new("RGBA", (size, size+75))
         for y in range(m_length):
             for x in range(m_length):
                 rat_left-=1
                 if rat_left >= 0:
-                    frame.paste(b_frames[f], (x*f_size, y*f_size))
-        r_frame = Image.alpha_composite(bg_frame, frame)
-        frame = banner.copy()
-        frame.paste(r_frame, (0, 75))
-        frames.append(frame)
+                    frame.paste(b_frames[f], (x*f_size, y*f_size+75))
+        frames.append(Image.alpha_composite(banner.copy(), frame))        
         
-    
     # Convert to Base64
     buffer = io.BytesIO()
     frames[0].save(buffer, format="PNG", quality=50, save_all=True, append_images=frames[1:], loop=0)
     buffer.seek(0)
+    
     return buffer
 
 @app.route('/')
 def index():
     count = add()
     b64 = make_rat(count)
-    
-    return send_file(
-        b64, download_name=f"{count}-spinning-rat.png", mimetype="image/png"
-    )
-
-@app.route('/<count>')
-def rat_count(count):
-    if not count.isnumeric():
-        return 'Not a number'
-    b64 = make_rat(int(count))
     
     return send_file(
         b64, download_name=f"{count}-spinning-rat.png", mimetype="image/png"
