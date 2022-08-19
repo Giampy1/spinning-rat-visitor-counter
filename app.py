@@ -8,8 +8,8 @@ import humanize
 app = Flask(__name__)
 
 
-num_key_frames = 37
-size = 500
+num_key_frames = 29
+size = 300
 
 b_gif = Image.open('./assets/rat-spinning.gif')
 
@@ -63,7 +63,8 @@ def make_rat(count: int = 1):
                 if rat_left >= 0:
                     frame.paste(b_frames[f], (x*f_size, y*f_size+75))
         frames.append(Image.alpha_composite(banner.copy(), frame))        
-        
+
+    
     # Convert to Base64
     buffer = io.BytesIO()
     frames[0].save(buffer, format="PNG", quality=50, save_all=True, append_images=frames[1:], loop=0)
