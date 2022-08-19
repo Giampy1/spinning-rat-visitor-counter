@@ -1,15 +1,15 @@
+from email.policy import default
 import io
 from math import ceil, sqrt
 from os.path import exists
 
-from flask import Flask, send_file
+from flask import Flask, send_file, request
 from PIL import Image, ImageDraw, ImageFont
 import humanize
 app = Flask(__name__)
 
 
 num_key_frames = 29
-size = 300
 
 b_gif = Image.open('./assets/rat-spinning.gif')
 
@@ -33,7 +33,7 @@ def add():
     
     return count
 
-def make_rat(count: int = 1):
+def make_rat(count: int = 1, size: int = 300):
     b_frames = []
     
     for i in range(num_key_frames):
@@ -72,10 +72,11 @@ def make_rat(count: int = 1):
     
     return buffer
 
-@app.route('/')
+@app.route('/get')
 def index():
+    size = request.get("size", default=300)
     count = add()
-    b64 = make_rat(count)
+    b64 = make_rat(count, size)
     
     return send_file(
         b64, download_name=f"{count}-spinning-rat.png", mimetype="image/png"
