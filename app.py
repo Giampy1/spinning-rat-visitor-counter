@@ -1,9 +1,8 @@
-from email.policy import default
 import io
 from math import ceil, sqrt
 from os.path import exists
 
-from flask import Flask, send_file, request
+from flask import Flask, send_file, request, make_response
 from PIL import Image, ImageDraw, ImageFont
 import humanize
 app = Flask(__name__)
@@ -78,6 +77,6 @@ def index():
     count = add()
     b64 = make_rat(count, size)
     
-    return send_file(
-        b64, download_name=f"{count}-spinning-rat.png", mimetype="image/png", max_age=1
-    )
+    response = make_response(send_file(b64, download_name=f"{count}-spinning-rat.png"))
+    response.headers['Cache-Control'] = 'max-age=0, no-cache, no-store, must-revalidate'
+    return response
