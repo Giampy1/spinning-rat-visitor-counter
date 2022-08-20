@@ -78,5 +78,5 @@ def index():
     b64 = make_rat(count, size)
     
     response = make_response(send_file(b64, download_name=f"{count}-spinning-rat.png"))
-    response.headers['Cache-Control'] = 'max-age=0, no-cache, no-store, must-revalidate'
+    response.headers['Cache-Control'] = 'max-age=0, no-cache, no-store'
     return response
