@@ -74,7 +74,7 @@ def make_rat(count: int = 1, size: int = 300):
 
 @app.route('/get')
 def index():
-    size = request.get("size", default=300)
+    size = request.get("size", default=300, type=int)
     count = add()
     b64 = make_rat(count, size)
     
