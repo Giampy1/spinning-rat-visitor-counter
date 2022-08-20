@@ -79,5 +79,5 @@ def index():
     b64 = make_rat(count, size)
     
     return send_file(
-        b64, download_name=f"{count}-spinning-rat.png", mimetype="image/png"
+        b64, download_name=f"{count}-spinning-rat.png", mimetype="image/png", max_age=2592000
     )
